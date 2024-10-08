@@ -3,14 +3,13 @@ import { items as ProductDetails } from "../../data";
 
 const HomeScreen = (items) => {
   const modes = ["One time Payment", "Subscription"];
-  const [completeData, setCompleteData] = useState([]);
-  const [productName, setProductName] = useState("LOS for Max Part 2");
+  const [productName, setProductName] = useState("");
   const [selectedOption, setSelectedOption] = useState(null);
   const [data, setData] = useState(null);
   const [user, setUser] = useState(null);
   const [priceId, setPriceId] = useState("");
   const [buttonName, setButtonName] = useState("Generate Link");
-  const [modeName, setModeName] = useState("One time Payment");
+  const [modeName, setModeName] = useState("");
   const handleOptionChange = (event) => {
     if (buttonName != "Generate Link") setButtonName("Generate Link");
     const selectedIndex = event.target.selectedIndex;
@@ -27,18 +26,12 @@ const HomeScreen = (items) => {
       setSelectedOption(null);
     } else {
       setSelectedOption(filteredProductsArray);
-      setData(filteredProductsArray[0]);
-      setPriceId(filteredProductsArray[0]["Price ID"]);
     }
   };
   const handleInputChange = (e) => {
     if (buttonName != "Generate Link") setButtonName("Generate Link");
     setUser(e.target.value);
   };
-  useEffect(() => {
-    setCompleteData(items.items);
-  }, [items.items]);
-
   useEffect(() => {
     if (productName.length !== 0) {
       fetchProductMappedData(productName);
@@ -51,6 +44,7 @@ const HomeScreen = (items) => {
       const url = `https://us-central1-tlloanapp-d0571.cloudfunctions.net/stripePayment/purchase/${user}/${priceId}?mode=${
         modeName === "One time Payment" ? "payment" : "subscription"
       }`;
+
       navigator.clipboard
         .writeText(url)
         .then(() => {
@@ -85,11 +79,16 @@ const HomeScreen = (items) => {
           <div className="flex relative flex-col gap-2">
             <label className="font-semibold">Product Name</label>
             <select
+              required
+              defaultValue=""
               className="h-10 bg-white border border-gray-400 rounded-lg px-3"
               onChange={(e) => {
                 setProductName(items.items[e.target.selectedIndex]);
               }}
             >
+              <option disabled value="">
+                Select Product
+              </option>
               {items.items.map((option, index) => (
                 <option key={index} value={option}>
                   {option}
@@ -97,21 +96,30 @@ const HomeScreen = (items) => {
               ))}
             </select>
           </div>
-          {selectedOption && (
-            <div className="flex flex-col gap-2">
-              <label className="font-semibold">Product Variant</label>
-              <select
-                className="h-10 bg-white border border-gray-400 rounded-lg px-3"
-                onChange={handleOptionChange}
-              >
-                {selectedOption.map((option, index) => (
-                  <option key={index} value={option["Price ID"]}>
-                    {option.Amount} {option.Currency} {option["Billing Scheme"]}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
+          <div className="flex flex-col gap-2">
+            <label className="font-semibold">Product Variant</label>
+            <select
+              className="h-10 bg-white border border-gray-400 rounded-lg px-3"
+              onChange={handleOptionChange}
+              required
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Select Variant
+              </option>
+              {selectedOption && (
+                <>
+                  {selectedOption.map((option, index) => (
+                    <option key={index} value={option["Price ID"]}>
+                      {option.Amount} {option.Currency}{" "}
+                      {option["Billing Scheme"]}
+                    </option>
+                  ))}
+                </>
+              )}
+            </select>
+          </div>
+
           {data && (
             <div className="mt-4 p-4 border rounded-lg">
               <h3 className="text-lg font-semibold">Details</h3>
@@ -218,6 +226,8 @@ const HomeScreen = (items) => {
           <div className="flex relative flex-col gap-2">
             <label className="font-semibold">Mode</label>
             <select
+              required
+              defaultValue=""
               className="h-10 bg-white border border-gray-400 rounded-lg px-3"
               onChange={(e) => {
                 if (buttonName != "Generate Link")
@@ -225,6 +235,9 @@ const HomeScreen = (items) => {
                 setModeName(modes[e.target.selectedIndex]);
               }}
             >
+              <option disabled value="">
+                Select Mode
+              </option>
               {modes.map((mode, index) => (
                 <option key={index} value={mode}>
                   {mode}
