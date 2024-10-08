@@ -28,6 +28,13 @@ const HomeScreen = (items) => {
       setSelectedOption(filteredProductsArray);
     }
   };
+  const handleProductChange = (e) => {
+    if (buttonName != "Generate Link") setButtonName("Generate Link");
+    setProductName(items.items[e.target.selectedIndex - 1]);
+    setSelectedOption(null);
+    setPriceId("");
+    setData(null);
+  };
   const handleInputChange = (e) => {
     if (buttonName != "Generate Link") setButtonName("Generate Link");
     setUser(e.target.value);
@@ -82,9 +89,7 @@ const HomeScreen = (items) => {
               required
               defaultValue=""
               className="h-10 bg-white border border-gray-400 rounded-lg px-3"
-              onChange={(e) => {
-                setProductName(items.items[e.target.selectedIndex - 1]);
-              }}
+              onChange={handleProductChange}
             >
               <option disabled value="">
                 Select Product
@@ -103,6 +108,7 @@ const HomeScreen = (items) => {
               onChange={handleOptionChange}
               required
               defaultValue=""
+              value={priceId}
             >
               <option value="" disabled>
                 Select Variant
