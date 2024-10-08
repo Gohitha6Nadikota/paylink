@@ -12,7 +12,7 @@ const HomeScreen = (items) => {
   const [modeName, setModeName] = useState("");
   const handleOptionChange = (event) => {
     if (buttonName != "Generate Link") setButtonName("Generate Link");
-    const selectedIndex = event.target.selectedIndex;
+    const selectedIndex = event.target.selectedIndex - 1;
     setData(selectedOption[selectedIndex]);
     setPriceId(selectedOption[selectedIndex]["Price ID"]);
   };
@@ -83,7 +83,7 @@ const HomeScreen = (items) => {
               defaultValue=""
               className="h-10 bg-white border border-gray-400 rounded-lg px-3"
               onChange={(e) => {
-                setProductName(items.items[e.target.selectedIndex]);
+                setProductName(items.items[e.target.selectedIndex - 1]);
               }}
             >
               <option disabled value="">
@@ -232,7 +232,7 @@ const HomeScreen = (items) => {
               onChange={(e) => {
                 if (buttonName != "Generate Link")
                   setButtonName("Generate Link");
-                setModeName(modes[e.target.selectedIndex]);
+                setModeName(modes[e.target.selectedIndex - 1]);
               }}
             >
               <option disabled value="">
