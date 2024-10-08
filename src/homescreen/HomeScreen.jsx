@@ -75,7 +75,7 @@ const HomeScreen = (items) => {
         }
     }
     return (
-        <form className='h-[100vh] w-[100vw] p-10 flex flex-col gap-5 items-center overflow-hidden' onSubmit={handleSubmit}>
+        <form className='h-[100vh] w-[100vw] p-10 flex flex-col gap-5 items-center overflow-hidden text-sm' onSubmit={handleSubmit}>
             
             <div className='h-full min-w-[1000px] flex flex-col gap-5 overflow-scroll no-scrollbar  p-10 rounded-md shadow-lg shadow-[#2b292a7b] max-w-[1000px] border border-[#08080837] '>
                 <h1 className='text-[1.65rem] text-center font-semibold'>Payment Details</h1>
