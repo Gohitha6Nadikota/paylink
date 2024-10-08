@@ -64,10 +64,10 @@ const HomeScreen = (items) => {
 
   return (
     <form
-      className="min-h-[100vh] h-auto w-[100vw] flex flex-col bg-white gap-5 items-center text-sm justify-center"
+      className="min-h-[100vh] h-auto w-[100vw] flex flex-col p-2 bg-white gap-5 items-center text-sm justify-center"
       onSubmit={handleSubmit}
     >
-      <div className="flex flex-col gap-5 h-auto  w-[60vw] p-5 rounded-md shadow-lg border border-gray-300 items-center justify-start">
+      <div className="flex flex-col gap-5 h-auto w-full md:w-[60vw] p-5 rounded-md shadow-lg border border-gray-300 items-center justify-start">
         <h1 className="text-2xl text-center font-semibold w-full">
           Payment Details
         </h1>
