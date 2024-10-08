@@ -2,14 +2,15 @@ import React, { useEffect, useState } from "react";
 import { items as ProductDetails } from "../../data";
 
 const HomeScreen = (items) => {
+  const modes = ["One time Payment", "Subscription"];
   const [completeData, setCompleteData] = useState([]);
-  const [productName, setProductName] = useState("");
+  const [productName, setProductName] = useState("LOS for Max Part 2");
   const [selectedOption, setSelectedOption] = useState(null);
   const [data, setData] = useState(null);
   const [user, setUser] = useState(null);
   const [priceId, setPriceId] = useState("");
   const [buttonName, setButtonName] = useState("Generate Link");
-
+  const [modeName, setModeName] = useState("One time Payment");
   const handleOptionChange = (event) => {
     if (buttonName != "Generate Link") setButtonName("Generate Link");
     const selectedIndex = event.target.selectedIndex;
@@ -46,8 +47,10 @@ const HomeScreen = (items) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (priceId) {
-      const url = `https://us-central1-tlloanapp-d0571.cloudfunctions.net/stripePayment/purchase/${user}/${priceId}?mode=subscription`;
+    if (priceId && modeName && user) {
+      const url = `https://us-central1-tlloanapp-d0571.cloudfunctions.net/stripePayment/purchase/${user}/${priceId}?mode=${
+        modeName === "One time Payment" ? "payment" : "subscription"
+      }`;
       navigator.clipboard
         .writeText(url)
         .then(() => {
@@ -61,14 +64,14 @@ const HomeScreen = (items) => {
 
   return (
     <form
-      className="min-h-[100vh] h-auto w-[100vw] p-5 flex flex-col bg-white gap-5 items-center text-sm justify-center"
+      className="min-h-[100vh] h-auto w-[100vw] flex flex-col bg-white gap-5 items-center text-sm justify-center"
       onSubmit={handleSubmit}
     >
-      <div className="flex flex-col gap-5 h-auto min-h-[60vh] w-[60vw] p-5 rounded-md shadow-lg border border-gray-300 items-center justify-start">
+      <div className="flex flex-col gap-5 h-auto  w-[60vw] p-5 rounded-md shadow-lg border border-gray-300 items-center justify-start">
         <h1 className="text-2xl text-center font-semibold w-full">
           Payment Details
         </h1>
-        <div className="flex flex-col gap-5 overflow-y-auto h-auto min-h-[60vh] text-sm w-full">
+        <div className="flex flex-col gap-5 overflow-y-auto h-auto text-sm w-full">
           <div className="flex flex-col gap-2">
             <label className="font-semibold">User Id</label>
             <input
@@ -212,6 +215,23 @@ const HomeScreen = (items) => {
               </div>
             </div>
           )}
+          <div className="flex relative flex-col gap-2">
+            <label className="font-semibold">Mode</label>
+            <select
+              className="h-10 bg-white border border-gray-400 rounded-lg px-3"
+              onChange={(e) => {
+                if (buttonName != "Generate Link")
+                  setButtonName("Generate Link");
+                setModeName(modes[e.target.selectedIndex]);
+              }}
+            >
+              {modes.map((mode, index) => (
+                <option key={index} value={mode}>
+                  {mode}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 
